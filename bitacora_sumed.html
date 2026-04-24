@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora SUMED</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1B3A6B;
+    --azul-med: #2E6DB4;
+    --azul-cl: #D6E4F7;
+    --verde: #1A7A4A;
+    --verde-cl: #E8F5E9;
+    --rojo: #C0392B;
+    --rojo-cl: #FFEBEE;
+    --naranja: #E67E22;
+    --naranja-cl: #FFF3E0;
+    --morado: #6A1B9A;
+    --morado-cl: #F3E5F5;
+    --gris: #5F6368;
+    --gris-cl: #F4F6F9;
+    --bg: #F0F4FA;
+    --white: #FFFFFF;
+    --border: #CBD5E0;
+    --text: #1A202C;
+    --text-sec: #4A5568;
+    --shadow: 0 2px 12px rgba(27,58,107,0.10);
+    --shadow-lg: 0 8px 32px rgba(27,58,107,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--azul);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(27,58,107,0.25);
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .logo-text p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 1px;
+  }
+  .header-actions {
+    display: flex; gap: 8px; align-items: center;
+  }
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+  .btn-primary {
+    background: #fff;
+    color: var(--azul);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--azul-cl); }
+  .btn-danger { background: var(--rojo); color: #fff; }
+  .btn-danger:hover { background: #a93226; }
+
+  /* ── TABS ── */
+  .tabs {
+    background: var(--white);
+    border-bottom: 1.5px solid var(--border);
+    position: sticky;
+    top: 65px;
+    z-index: 90;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .tabs-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex; gap: 0;
+  }
+  .tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-sec);
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--azul); }
+  .tab.active {
+    color: var(--azul);
+    border-bottom-color: var(--azul);
+    font-weight: 600;
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--gris-cl);
+  }
+  .card-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--azul);
+  }
+  .card-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ── FORM ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.one { grid-template-columns: 1fr; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 640px) {
+    .form-grid, .form-grid.three { grid-template-columns: 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--azul);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .field input, .field select, .field textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--gris-cl);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 13px;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    resize: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--azul-med);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(46,109,180,0.12);
+  }
+  .field textarea { min-height: 80px; line-height: 1.5; }
+
+  /* ── TAGS ── */
+  .tags-label { font-size: 12px; font-weight: 600; color: var(--azul); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .tags-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag-chip {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--text-sec);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tag-chip:hover { border-color: var(--azul); color: var(--azul); }
+  .tag-chip.selected { border-color: transparent; color: #fff; font-weight: 600; }
+  .tag-chip.tag-flujo.selected     { background: var(--azul-med); }
+  .tag-chip.tag-consumibles.selected { background: var(--verde); }
+  .tag-chip.tag-equipos.selected   { background: var(--naranja); }
+  .tag-chip.tag-mejora.selected    { background: var(--morado); }
+  .tag-chip.tag-incidencia.selected { background: var(--rojo); }
+  .tag-chip.tag-aprendizaje.selected { background: #00796B; }
+
+  /* ── SUBMIT BTN ── */
+  .submit-row {
+    display: flex; justify-content: flex-end; gap: 10px;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--gris-cl);
+  }
+  .btn-save {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    padding: 11px 28px;
+    border-radius: 8px; border: none;
+    background: var(--azul); color: #fff;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-save:hover { background: var(--azul-med); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn-save:active { transform: translateY(0); }
+
+  /* ── ENTRIES LIST ── */
+  .entries-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .entries-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700; color: var(--azul);
+  }
+  .entries-count {
+    background: var(--azul-cl);
+    color: var(--azul);
+    font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  .entry-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .entry-card:hover { box-shadow: var(--shadow-lg); }
+
+  .entry-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--gris-cl);
+    background: var(--gris-cl);
+    cursor: pointer;
+  }
+  .entry-date-badge {
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 6px;
+    white-space: nowrap;
+  }
+  .entry-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    flex: 1; line-height: 1.3;
+  }
+  .entry-turno {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 12px;
+    white-space: nowrap;
+  }
+  .turno-mat  { background: #FFF9C4; color: #827717; }
+  .turno-ves  { background: #E3F2FD; color: #1565C0; }
+  .turno-noc  { background: #EDE7F6; color: #4527A0; }
+  .turno-g24  { background: #FCE4EC; color: #880E4F; }
+
+  .entry-body { padding: 16px 18px; display: none; }
+  .entry-body.open { display: block; }
+
+  .entry-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .entry-tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 12px;
+  }
+  .et-flujo      { background: #D6E4F7; color: var(--azul); }
+  .et-consumibles{ background: var(--verde-cl); color: var(--verde); }
+  .et-equipos    { background: var(--naranja-cl); color: var(--naranja); }
+  .et-mejora     { background: var(--morado-cl); color: var(--morado); }
+  .et-incidencia { background: var(--rojo-cl); color: var(--rojo); }
+  .et-aprendizaje{ background: #E0F2F1; color: #00796B; }
+
+  .entry-section { margin-bottom: 12px; }
+  .entry-section-label {
+    font-size: 11px; font-weight: 700; color: var(--gris);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .entry-section p { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .entry-section p.empty { color: var(--gris); font-style: italic; }
+
+  .entry-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--gris-cl); }
+  .btn-sm {
+    font-size: 12px; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--white); color: var(--text-sec);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .btn-sm:hover { background: var(--gris-cl); }
+  .btn-sm.danger { border-color: var(--rojo-cl); color: var(--rojo); }
+  .btn-sm.danger:hover { background: var(--rojo-cl); }
+
+  /* ── SEMANA DASHBOARD ── */
+  .week-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .stat-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text-sec); margin-top: 4px; }
+
+  .area-bar { margin-bottom: 10px; }
+  .area-bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+  .bar-track { background: var(--gris-cl); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--azul-med); transition: width 0.4s ease; }
+
+  .problem-list { list-style: none; }
+  .problem-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--gris-cl);
+    font-size: 14px; color: var(--text);
+    line-height: 1.4;
+  }
+  .problem-list li:last-child { border-bottom: none; }
+  .problem-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--azul-med); margin-top: 5px; flex-shrink: 0;
+  }
+
+  .empty-state {
+    text-align: center; padding: 48px 24px;
+    color: var(--text-sec);
+  }
+  .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--verde); color: #fff;
+    font-size: 14px; font-weight: 500;
+    padding: 12px 22px; border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.25s ease;
+    z-index: 9999;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn {
+    font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white); color: var(--text-sec);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--azul); color: var(--azul); background: var(--azul-cl); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--azul);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 12px; margin-top: 20px;
+  }
+  .section-title:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">📋</div>
+      <div class="logo-text">
+        <h1>Bitácora SUMED</h1>
+        <p>Ingeniería Clínica · Diario de campo</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="exportJSON()">⬇ Exportar</button>
+      <button class="btn btn-primary" onclick="showTab('nueva')">+ Nueva entrada</button>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tabs-inner">
+    <button class="tab active" onclick="showTab('nueva')" id="tab-nueva">✏️ Nueva entrada</button>
+    <button class="tab" onclick="showTab('registros')" id="tab-registros">📂 Registros</button>
+    <button class="tab" onclick="showTab('semana')" id="tab-semana">📊 Resumen semanal</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── NUEVA ENTRADA ── -->
+  <div class="section active" id="sec-nueva">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:#D6E4F7; font-size:18px;">📅</div>
+        <h2>Datos del día</h2>
+      </div>
+      <div class="form-grid three">
+        <div class="field">
+          <label>Fecha</label>
+          <input type="date" id="f-fecha">
+        </div>
+        <div class="field">
+          <label>Turno</label>
+          <select id="f-turno">
+            <option value="">Selecciona...</option>
+            <option>Matutino</option>
+            <option>Vespertino</option>
+            <option>Nocturno</option>
+            <option>Guardia 24h</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Área principal</label>
+          <select id="f-area">
+            <option value="">Selecciona...</option>
+            <option>Quirófano</option>
+            <option>Hemodinamia</option>
+            <option>Ambos</option>
+            <option>Bodega / Admin</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:#E8F5E9; font-size:18px;">🔬</div>
+        <h2>¿Qué hiciste hoy?</h2>
+      </div>
+      <div class="form-grid one">
+        <div class="field">
+          <label>Actividades del turno</label>
+          <textarea id="f-actividades" rows="4" placeholder="Ej: Preparé consumibles para 2 cirugías cardiovasculares. Generé remisión con Dra. López. Registré lotes de electrodos en el sistema..."></textarea>
+        </div>
+        <div class="field">
+          <label>Procedimientos / cirugías del día</label>
+          <textarea id="f-procedimientos" rows="3" placeholder="Ej: 1 cirugía cardiovascular (9am), 1 hemodinamia (2pm). Sin procedimientos en nocturno."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:#FFF3E0; font-size:18px;">🔍</div>
+        <h2>Observaciones y problemas detectados</h2>
+      </div>
+      <div class="form-grid one">
+        <div class="field">
+          <label>¿Qué funcionó bien?</label>
+          <textarea id="f-bien" rows="3" placeholder="Ej: El flujo de remisión fue fluido. La Dra. X ya conoce el proceso y firma rápido."></textarea>
+        </div>
+        <div class="field">
+          <label>¿Qué fue lento, difícil o manual?</label>
+          <textarea id="f-problemas" rows="3" placeholder="Ej: Tardé 20 min buscando el lote del electrodo en la caja física. No había sistema para validarlo rápido..."></textarea>
+        </div>
+        <div class="field">
+          <label>💡 Ideas de mejora / automatización</label>
+          <textarea id="f-ideas" rows="3" placeholder="Ej: Si hubiera un escáner de código de barras en el lote, se capturaría sólo en la remisión. Ahorro estimado: 15 min por cirugía..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:#EDE7F6; font-size:18px;">🏷️</div>
+        <h2>Categorías</h2>
+      </div>
+      <div class="tags-label">Selecciona todas las que apliquen</div>
+      <div class="tags-grid" id="tags-container">
+        <div class="tag-chip tag-flujo" onclick="toggleTag(this, 'flujo')">⚡ Flujo de trabajo</div>
+        <div class="tag-chip tag-consumibles" onclick="toggleTag(this, 'consumibles')">📦 Consumibles</div>
+        <div class="tag-chip tag-equipos" onclick="toggleTag(this, 'equipos')">🔧 Equipos médicos</div>
+        <div class="tag-chip tag-mejora" onclick="toggleTag(this, 'mejora')">💡 Idea de mejora</div>
+        <div class="tag-chip tag-incidencia" onclick="toggleTag(this, 'incidencia')">⚠️ Incidencia</div>
+        <div class="tag-chip tag-aprendizaje" onclick="toggleTag(this, 'aprendizaje')">📚 Aprendizaje nuevo</div>
+      </div>
+      <div class="submit-row">
+        <button class="btn-save" onclick="guardarEntrada()">💾 Guardar entrada</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── REGISTROS ── -->
+  <div class="section" id="sec-registros">
+    <div class="entries-header">
+      <h2>Todas las entradas</h2>
+      <span class="entries-count" id="entries-count">0 días</span>
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filtrar('flujo', this)">Flujo</button>
+      <button class="filter-btn" onclick="filtrar('consumibles', this)">Consumibles</button>
+      <button class="filter-btn" onclick="filtrar('equipos', this)">Equipos</button>
+      <button class="filter-btn" onclick="filtrar('mejora', this)">Ideas de mejora</button>
+      <button class="filter-btn" onclick="filtrar('incidencia', this)">Incidencias</button>
+    </div>
+    <div id="entries-list"></div>
+  </div>
+
+  <!-- ── RESUMEN SEMANAL ── -->
+  <div class="section" id="sec-semana">
+    <div id="semana-content"></div>
+  </div>
+
+</main>
+
+<div id="toast">✓ Entrada guardada</div>
+
+<script>
+const STORAGE_KEY = 'bitacora_sumed_v1';
+let selectedTags = [];
+let filterActive = 'todos';
+
+function getEntries() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function saveEntries(entries) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+// Set today's date
+document.getElementById('f-fecha').value = new Date().toISOString().split('T')[0];
+
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'registros') renderEntries();
+  if (tab === 'semana') renderSemana();
+}
+
+function toggleTag(el, tag) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    if (!selectedTags.includes(tag)) selectedTags.push(tag);
+  } else {
+    selectedTags = selectedTags.filter(t => t !== tag);
+  }
+}
+
+function guardarEntrada() {
+  const fecha = document.getElementById('f-fecha').value;
+  const turno = document.getElementById('f-turno').value;
+  const area = document.getElementById('f-area').value;
+  const actividades = document.getElementById('f-actividades').value.trim();
+
+  if (!fecha || !actividades) {
+    alert('Por favor completa al menos la fecha y las actividades del turno.');
+    return;
+  }
+
+  const entry = {
+    id: Date.now(),
+    fecha,
+    turno,
+    area,
+    actividades,
+    procedimientos: document.getElementById('f-procedimientos').value.trim(),
+    bien: document.getElementById('f-bien').value.trim(),
+    problemas: document.getElementById('f-problemas').value.trim(),
+    ideas: document.getElementById('f-ideas').value.trim(),
+    tags: [...selectedTags],
+  };
+
+  const entries = getEntries();
+  entries.unshift(entry);
+  saveEntries(entries);
+  resetForm();
+  showToast('✓ Entrada guardada correctamente');
+}
+
+function resetForm() {
+  document.getElementById('f-fecha').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-turno').value = '';
+  document.getElementById('f-area').value = '';
+  ['f-actividades','f-procedimientos','f-bien','f-problemas','f-ideas']
+    .forEach(id => document.getElementById(id).value = '');
+  selectedTags = [];
+  document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('selected'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function filtrar(tag, btn) {
+  filterActive = tag;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderEntries();
+}
+
+function turnoClass(t) {
+  if (t === 'Matutino') return 'turno-mat';
+  if (t === 'Vespertino') return 'turno-ves';
+  if (t === 'Nocturno') return 'turno-noc';
+  if (t === 'Guardia 24h') return 'turno-g24';
+  return '';
+}
+
+function tagClass(t) {
+  return 'et-' + t;
+}
+
+function tagLabel(t) {
+  const m = { flujo:'Flujo', consumibles:'Consumibles', equipos:'Equipos',
+              mejora:'Mejora', incidencia:'Incidencia', aprendizaje:'Aprendizaje' };
+  return m[t] || t;
+}
+
+function formatFecha(dateStr) {
+  const [y,m,d] = dateStr.split('-');
+  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${d} ${meses[parseInt(m)-1]} ${y}`;
+}
+
+function renderEntries() {
+  const entries = getEntries();
+  const filtered = filterActive === 'todos'
+    ? entries
+    : entries.filter(e => e.tags && e.tags.includes(filterActive));
+
+  document.getElementById('entries-count').textContent =
+    filtered.length + ' día' + (filtered.length !== 1 ? 's' : '');
+
+  const container = document.getElementById('entries-list');
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <p>No hay entradas aún. ¡Empieza hoy!</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(e => `
+    <div class="entry-card">
+      <div class="entry-header" onclick="toggleEntry(${e.id})">
+        <span class="entry-date-badge">${formatFecha(e.fecha)}</span>
+        ${e.turno ? `<span class="entry-turno ${turnoClass(e.turno)}">${e.turno}</span>` : ''}
+        ${e.area ? `<span class="entry-turno" style="background:#F4F6F9;color:#5F6368;">${e.area}</span>` : ''}
+        <span class="entry-title">${e.actividades.substring(0, 80)}${e.actividades.length > 80 ? '…' : ''}</span>
+      </div>
+      <div class="entry-body" id="body-${e.id}">
+        ${e.tags && e.tags.length ? `
+          <div class="entry-tags">
+            ${e.tags.map(t => `<span class="entry-tag ${tagClass(t)}">${tagLabel(t)}</span>`).join('')}
+          </div>` : ''}
+
+        <div class="entry-section">
+          <div class="entry-section-label">Actividades</div>
+          <p>${e.actividades}</p>
+        </div>
+        ${e.procedimientos ? `<div class="entry-section">
+          <div class="entry-section-label">Procedimientos</div>
+          <p>${e.procedimientos}</p>
+        </div>` : ''}
+        ${e.bien ? `<div class="entry-section">
+          <div class="entry-section-label">✅ Qué funcionó bien</div>
+          <p>${e.bien}</p>
+        </div>` : ''}
+        ${e.problemas ? `<div class="entry-section">
+          <div class="entry-section-label">🔴 Problemas detectados</div>
+          <p>${e.problemas}</p>
+        </div>` : ''}
+        ${e.ideas ? `<div class="entry-section">
+          <div class="entry-section-label">💡 Ideas de mejora</div>
+          <p style="color:var(--morado); font-weight:500;">${e.ideas}</p>
+        </div>` : ''}
+
+        <div class="entry-actions">
+          <button class="btn-sm danger" onclick="eliminarEntrada(${e.id})">🗑 Eliminar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleEntry(id) {
+  const body = document.getElementById('body-' + id);
+  body.classList.toggle('open');
+}
+
+function eliminarEntrada(id) {
+  if (!confirm('¿Eliminar esta entrada?')) return;
+  const entries = getEntries().filter(e => e.id !== id);
+  saveEntries(entries);
+  renderEntries();
+  showToast('🗑 Entrada eliminada');
+}
+
+function renderSemana() {
+  const entries = getEntries();
+  const container = document.getElementById('semana-content');
+
+  if (entries.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📊</div>
+      <p>Aún no hay entradas. Empieza a registrar y aquí verás tus patrones.</p>
+    </div>`;
+    return;
+  }
+
+  // Últimas 2 semanas
+  const now = new Date();
+  const twoWeeksAgo = new Date(now - 14 * 24 * 60 * 60 * 1000);
+  const recent = entries.filter(e => new Date(e.fecha) >= twoWeeksAgo);
+
+  // Conteo de tags
+  const tagCount = {};
+  entries.forEach(e => (e.tags || []).forEach(t => {
+    tagCount[t] = (tagCount[t] || 0) + 1;
+  }));
+  const maxTag = Math.max(...Object.values(tagCount), 1);
+
+  // Ideas acumuladas
+  const ideas = entries.filter(e => e.ideas).map(e => ({
+    fecha: e.fecha, idea: e.ideas
+  }));
+
+  // Problemas acumulados
+  const problemas = entries.filter(e => e.problemas).map(e => ({
+    fecha: e.fecha, prob: e.problemas
+  }));
+
+  const tagLabels = { flujo:'Flujo de trabajo', consumibles:'Consumibles',
+    equipos:'Equipos médicos', mejora:'Ideas de mejora',
+    incidencia:'Incidencias', aprendizaje:'Aprendizaje' };
+
+  container.innerHTML = `
+    <div class="section-title">Resumen general</div>
+    <div class="week-grid">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--azul)">${entries.length}</div>
+        <div class="stat-label">Días registrados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--morado)">${ideas.length}</div>
+        <div class="stat-label">Ideas de mejora</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--rojo)">${problemas.length}</div>
+        <div class="stat-label">Problemas detectados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--verde)">${recent.length}</div>
+        <div class="stat-label">Entradas últimas 2 semanas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:#D6E4F7;">📊</div>
+        <h2>Áreas más frecuentes</h2>
+      </div>
+      ${Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).map(([tag, count]) => `
+        <div class="area-bar">
+          <div class="area-bar-label">
+            <span>${tagLabels[tag] || tag}</span>
+            <span style="font-weight:600;color:var(--azul)">${count} día${count>1?'s':''}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${Math.round(count/maxTag*100)}%"></div>
+          </div>
+        </div>
+      `).join('')}
+      ${Object.keys(tagCount).length === 0 ? '<p style="color:var(--gris);font-size:14px;">Aún sin categorías registradas.</p>' : ''}
+    </div>
+
+    ${ideas.length > 0 ? `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--morado-cl);">💡</div>
+        <h2>Ideas de automatización acumuladas</h2>
+      </div>
+      <ul class="problem-list">
+        ${ideas.map(i => `
+          <li>
+            <div class="problem-dot" style="background:var(--morado)"></div>
+            <div>
+              <span style="font-size:11px;color:var(--gris);display:block;margin-bottom:2px">${formatFecha(i.fecha)}</span>
+              ${i.idea}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>` : ''}
+
+    ${problemas.length > 0 ? `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--rojo-cl);">🔴</div>
+        <h2>Problemas detectados</h2>
+      </div>
+      <ul class="problem-list">
+        ${problemas.map(p => `
+          <li>
+            <div class="problem-dot" style="background:var(--rojo)"></div>
+            <div>
+              <span style="font-size:11px;color:var(--gris);display:block;margin-bottom:2px">${formatFecha(p.fecha)}</span>
+              ${p.prob}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>` : ''}
+  `;
+}
+
+function exportJSON() {
+  const entries = getEntries();
+  if (entries.length === 0) { alert('No hay entradas que exportar.'); return; }
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bitacora_sumed_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  showToast('⬇ Exportado correctamente');
+}
+
+// Init
+renderEntries();
+</script>
+</body>
+</html>
